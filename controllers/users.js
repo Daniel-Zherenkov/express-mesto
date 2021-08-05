@@ -16,7 +16,7 @@ const getUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: 'Ошибка при запросе.' });
-      } else if (err.name === 'NotFound') {
+      } else if (err.message === 'NotFound') {
         res.status(404).send({ message: 'Пользователь не найден.' });
       } else {
         res.status(500).send({ message: 'Ошибка сервера.' });
@@ -32,7 +32,7 @@ const createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
-      } else if (err.name === 'Error') {
+      } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Пользователя нет в базе' });
       } else {
         res.status(500).send({ message: 'Ошибка сервера.' });
@@ -45,11 +45,12 @@ const updateProfile = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
+    { new: true, runValidators: true },
   )
     .orFail(new Error('Error'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.message === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else if (err.name === 'Error') {
         res.status(404).send({ message: 'Пользователя нет в базе' });
@@ -61,11 +62,15 @@ const updateProfile = (req, res) => {
 
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    { new: true, runValidators: true },
+  )
     .orFail(new Error('Error'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.message === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else if (err.name === 'Error') {
         res.status(404).send({ message: 'Пользователя нет в базе' });
