@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const Card = require('../models/card');
 
 const getCards = (req, res) => Card.find({})
@@ -25,7 +24,7 @@ const deleteCard = (req, res) => {
     .orFail(new Error('Error'))
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
@@ -45,7 +44,7 @@ const likeCard = (req, res) => {
     .orFail(new Error('Error'))
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
@@ -65,7 +64,7 @@ const dislikeCard = (req, res) => {
     .orFail(new Error('Error'))
     .then((card) => res.status(200).send(card))
     .catch((err) => {
-      if (err.message === 'CastError') {
+      if (err.name === 'CastError') {
         res.status(400).send({ message: 'Переданы некорректные данные для снятия лайка.' });
       } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });

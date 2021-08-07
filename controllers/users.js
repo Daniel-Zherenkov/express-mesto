@@ -50,9 +50,9 @@ const updateProfile = (req, res) => {
     .orFail(new Error('Error'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.message === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else if (err.name === 'Error') {
+      } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Пользователя нет в базе' });
       } else {
         res.status(500).send({ message: 'Ошибка сервера.' });
@@ -70,9 +70,9 @@ const updateAvatar = (req, res) => {
     .orFail(new Error('Error'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.message === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
-      } else if (err.name === 'Error') {
+      } else if (err.message === 'Error') {
         res.status(404).send({ message: 'Пользователя нет в базе' });
       } else {
         res.status(500).send({ message: 'Ошибка сервера.' });
