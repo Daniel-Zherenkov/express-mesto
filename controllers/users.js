@@ -29,11 +29,12 @@ const createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-    if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(400).send({ message: 'Переданы некорректные данные' });
       } else {
         res.status(500).send({ message: 'Ошибка сервера.' });
       }
+    });
 };
 
 const updateProfile = (req, res) => {
